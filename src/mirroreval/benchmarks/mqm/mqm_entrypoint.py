@@ -42,6 +42,16 @@ def launch_mqm_evaluation():
         except Exception as e:
             logger.warning(f"Could not pre-download COMET model: {e}")
 
+    # --- Pre-download: FLORES-200 SentencePiece model for spBLEU ---
+    from mirroreval.benchmarks.mqm.mqm_metrics import UNSEGMENTED_LANGS
+    if "bleu" in settings.mqm.metrics and UNSEGMENTED_LANGS & set(settings.mqm.languages):
+        logger.info("Caching the flores200 tokenizer for spBLEU...")
+        try:
+            from sacrebleu.metrics import BLEU
+            BLEU(tokenize="flores200")
+        except Exception as e:
+            logger.warning(f"Could not pre-download the flores200 tokenizer: {e}")
+
     # --- Launch ---
     if settings.slurm_job.use_slurm:
         logger.info("Submitting MQM benchmark to SLURM...")

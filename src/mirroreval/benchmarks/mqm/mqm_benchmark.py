@@ -7,30 +7,16 @@ Evaluates a translation model by:
      using the model under test (settings.model.model_checkpoint_path).
   2. Computing automated MT metrics (BLEU, ChrF, COMET) on those translations
      against FLORES+ reference translations.
-  3. Reporting per-language metric scores alongside empirical metric reliability
-     estimates derived from WMT human-judgment calibration data.
+  3. Reporting per-language metric scores alongside per-language reliability
+     evidence from AmanaMT v2 (see mqm_reliability.py): how well each metric
+     tracked human labels for that language, and whether that evidence is direct
+     (en->X human labels), indirect (X->en only), or absent (synthetic or
+     uninformative labels).
 
-The reliability estimates tell the user how much to trust each metric's scores
-for the evaluated model. They are derived from a multilingual meta-evaluation
-study across 11 languages and three resource tiers (Spearman correlation and
-pairwise accuracy vs. professional human MQM / Direct Assessment annotations).
-
-Output JSON structure (saved to settings.mqm.output_dir/mqm_results.json):
-  {
-    "model": "<model_checkpoint_path>",
-    "languages_evaluated": [...],
-    "metric_scores": {
-      "de": {"bleu": 45.2, "chrf": 60.1, "comet": 0.821},
-      ...
-    },
-    "metric_reliability": {
-      "bleu":  {"spearman_r": 0.107, "pairwise_acc": 0.544, "tier": "high-resource"},
-      "chrf":  {"spearman_r": 0.143, "pairwise_acc": 0.560, "tier": "high-resource"},
-      "comet": {"spearman_r": 0.343, "pairwise_acc": 0.639, "tier": "high-resource"},
-      ...   (entries per resource tier)
-    },
-    "recommendation": "COMET is the most reliable automated signal for this language set..."
-  }
+Output JSON (saved to settings.mqm.output_dir/mqm_results.json) has keys
+"model", "languages_evaluated", "flores_split", "metrics_run", "metric_scores"
+(per-language corpus averages), "metric_reliability" (per-language evidence from
+the packaged AmanaMT v2 table) and "recommendation" (plain-English summary).
 
 The model_checkpoint_path is expected to be an NLLB-200-style seq2seq translation
 model (e.g., "facebook/nllb-200-distilled-600M"). The model must support the
@@ -55,47 +41,10 @@ import mirroreval.benchmarks.mqm.mqm_datasets  # noqa: F401
 import mirroreval.benchmarks.mqm.mqm_metrics   # noqa: F401
 
 from mirroreval.benchmarks.mqm.mqm_datasets import NLLB_LANG_CODES
-
-
-# ---------------------------------------------------------------------------
-# Pre-computed metric reliability calibration
-# ---------------------------------------------------------------------------
-# These values are from a multilingual meta-evaluation study over 371k+ segments
-# across 11 languages using WMT MQM (professional) and WMT Direct Assessment
-# human annotations. Three resource tiers are reported separately.
-#
-# Reference: "Multilingual MT Metric Meta-Evaluation" (Turley, BYU 2026)
-# Methodology: Spearman ρ and pairwise accuracy (concordant pairs / total pairs,
-#   max_n=8000 sample) computed per language, then averaged within each tier.
-#   Williams (1959) tests confirm COMET significantly outperforms all other
-#   metrics at p ≈ 0 for every language evaluated.
-
-METRIC_RELIABILITY = {
-    "bleu": {
-        "high":   {"spearman_r": 0.107, "pairwise_acc": 0.544},
-        "medium": {"spearman_r": 0.206, "pairwise_acc": 0.569},
-        "low":    {"spearman_r": 0.230, "pairwise_acc": 0.576},
-    },
-    "chrf": {
-        "high":   {"spearman_r": 0.143, "pairwise_acc": 0.560},
-        "medium": {"spearman_r": 0.233, "pairwise_acc": 0.580},
-        "low":    {"spearman_r": 0.267, "pairwise_acc": 0.590},
-    },
-    "comet": {
-        "high":   {"spearman_r": 0.343, "pairwise_acc": 0.639},
-        "medium": {"spearman_r": 0.378, "pairwise_acc": 0.633},
-        "low":    {"spearman_r": 0.331, "pairwise_acc": 0.613},
-    },
-}
-
-# Resource tier classification for languages supported by this benchmark.
-# Languages not listed here are treated as "low".
-RESOURCE_TIERS = {
-    "de": "high", "zh": "high", "ru": "high", "he": "high",
-    "es": "medium", "cs": "medium", "tr": "medium", "uk": "medium",
-    "ha": "low", "km": "low", "ps": "low",
-    "sw": "low", "ht": "low", "lo": "low",
-}
+from mirroreval.benchmarks.mqm.mqm_reliability import (
+    build_reliability_section,
+    recommendation,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -150,43 +99,6 @@ def _corpus_metric_scores(segments: list[dict]) -> dict:
         "chrf":  sum(scores["chrf_score"])  / len(scores["chrf_score"])  if scores["chrf_score"]  else None,
         "comet": sum(scores["comet_score"]) / len(scores["comet_score"]) if scores["comet_score"] else None,
     }
-
-
-def _build_reliability_section(langs: list[str]) -> dict:
-    """
-    Build the metric_reliability block for the results JSON, reporting
-    calibration numbers for each resource tier present in langs.
-    """
-    tiers_present = sorted({RESOURCE_TIERS.get(l, "low") for l in langs})
-    reliability = {}
-    for metric, tier_data in METRIC_RELIABILITY.items():
-        reliability[metric] = {
-            tier: tier_data[tier]
-            for tier in tiers_present
-            if tier in tier_data
-        }
-    return reliability
-
-
-def _recommendation(langs: list[str]) -> str:
-    """Return a plain-English metric recommendation for the evaluated language set.
-
-    COMET is always recommended because our meta-evaluation found it statistically
-    outperforms BLEU and ChrF at p ≈ 0 (Williams test) for every language
-    evaluated — high, medium, and low resource alike. The recommendation text
-    includes the resource tier(s) of the evaluated languages and a note on when
-    surface-form metrics remain useful (fast, no GPU, no model weights needed).
-    """
-    tiers = {RESOURCE_TIERS.get(l, "low") for l in langs}
-    tier_str = " / ".join(sorted(tiers))
-    return (
-        f"COMET (Unbabel/wmt22-comet-da) is the most reliable automated metric "
-        f"for this language set ({tier_str} resource tier(s)), outperforming BLEU "
-        f"and ChrF on Spearman correlation and pairwise accuracy vs. human judgment "
-        f"at p ≈ 0 (Williams test). BLEU and ChrF provide fast reference-only "
-        f"alternatives when COMET is unavailable, with ChrF preferred over BLEU "
-        f"for morphologically complex or non-Latin-script languages."
-    )
 
 
 # ---------------------------------------------------------------------------
@@ -262,8 +174,8 @@ def run_benchmark():
         "flores_split": flores_split,
         "metrics_run": run_metrics,
         "metric_scores": metric_scores,
-        "metric_reliability": _build_reliability_section(target_langs),
-        "recommendation": _recommendation(target_langs),
+        "metric_reliability": build_reliability_section(target_langs, run_metrics),
+        "recommendation": recommendation(target_langs, run_metrics),
     }
 
     with open(output_file, "w") as f:

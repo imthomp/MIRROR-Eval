@@ -1,0 +1,761 @@
+{
+ "source": "AmanaMT v2 (Thompson and Ringger), revision of ACL Anthology 2026.wmt-main.42",
+ "code": "https://github.com/byu-matrix-lab/amana-mt",
+ "amana_mt_commit": "d9062fe",
+ "generated_by": "scripts/export_mirror_eval_reliability.py",
+ "inputs": [
+  "results/correlations.csv",
+  "results/direction_separated_correlations.csv",
+  "results/scores_comet.csv (language pairs)"
+ ],
+ "statistic": "segment-level Spearman rho with bootstrap 95% CI over source sentences; pairwise_acc as in v2",
+ "languages": {
+  "de": {
+   "label_type": "human_mqm",
+   "human_labels": true,
+   "domain": "news",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.152,
+      "spearman_ci": [
+       0.133,
+       0.174
+      ],
+      "pairwise_acc": 0.555,
+      "n": 49741
+     },
+     "en_to_x": {
+      "spearman_r": 0.152,
+      "n": 49741
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.198,
+      "spearman_ci": [
+       0.178,
+       0.218
+      ],
+      "pairwise_acc": 0.574,
+      "n": 49741
+     },
+     "en_to_x": {
+      "spearman_r": 0.198,
+      "n": 49741
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.427,
+      "spearman_ci": [
+       0.409,
+       0.444
+      ],
+      "pairwise_acc": 0.664,
+      "n": 49741
+     },
+     "en_to_x": {
+      "spearman_r": 0.427,
+      "n": 49741
+     }
+    }
+   },
+   "language_pairs": [
+    "en-de"
+   ],
+   "directions": [
+    "en_to_x"
+   ],
+   "evidence": "direct_en_to_x"
+  },
+  "zh": {
+   "label_type": "human_mqm",
+   "human_labels": true,
+   "domain": "news",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.195,
+      "spearman_ci": [
+       0.177,
+       0.212
+      ],
+      "pairwise_acc": 0.575,
+      "n": 65281
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.208,
+      "spearman_ci": [
+       0.191,
+       0.226
+      ],
+      "pairwise_acc": 0.58,
+      "n": 65281
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.489,
+      "spearman_ci": [
+       0.476,
+       0.502
+      ],
+      "pairwise_acc": 0.676,
+      "n": 65281
+     }
+    }
+   },
+   "language_pairs": [
+    "zh-en"
+   ],
+   "directions": [
+    "x_to_en"
+   ],
+   "evidence": "indirect",
+   "note": "Expert MQM, but X->en only (zh-en); no en->X evidence."
+  },
+  "ru": {
+   "label_type": "human_mqm",
+   "human_labels": true,
+   "domain": "news",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.196,
+      "spearman_ci": [
+       0.168,
+       0.224
+      ],
+      "pairwise_acc": 0.579,
+      "n": 35325
+     },
+     "en_to_x": {
+      "spearman_r": 0.196,
+      "n": 35325
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.229,
+      "spearman_ci": [
+       0.203,
+       0.256
+      ],
+      "pairwise_acc": 0.593,
+      "n": 35325
+     },
+     "en_to_x": {
+      "spearman_r": 0.229,
+      "n": 35325
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.455,
+      "spearman_ci": [
+       0.431,
+       0.479
+      ],
+      "pairwise_acc": 0.681,
+      "n": 35325
+     },
+     "en_to_x": {
+      "spearman_r": 0.455,
+      "n": 35325
+     }
+    }
+   },
+   "language_pairs": [
+    "en-ru"
+   ],
+   "directions": [
+    "en_to_x"
+   ],
+   "evidence": "direct_en_to_x"
+  },
+  "he": {
+   "label_type": "human_mqm",
+   "human_labels": true,
+   "domain": "unknown",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.263,
+      "spearman_ci": [
+       0.231,
+       0.295
+      ],
+      "pairwise_acc": 0.617,
+      "n": 9840
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.296,
+      "spearman_ci": [
+       0.266,
+       0.328
+      ],
+      "pairwise_acc": 0.632,
+      "n": 9840
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.482,
+      "spearman_ci": [
+       0.454,
+       0.51
+      ],
+      "pairwise_acc": 0.719,
+      "n": 9840
+     }
+    }
+   },
+   "language_pairs": [
+    "he-en"
+   ],
+   "directions": [
+    "x_to_en"
+   ],
+   "evidence": "indirect",
+   "note": "Expert MQM, but X->en only (he-en); no en->X evidence."
+  },
+  "es": {
+   "label_type": "human_mqm",
+   "human_labels": true,
+   "domain": "unknown",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.179,
+      "spearman_ci": [
+       0.155,
+       0.204
+      ],
+      "pairwise_acc": 0.609,
+      "n": 8708
+     },
+     "en_to_x": {
+      "spearman_r": 0.179,
+      "n": 8708
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.191,
+      "spearman_ci": [
+       0.165,
+       0.216
+      ],
+      "pairwise_acc": 0.617,
+      "n": 8708
+     },
+     "en_to_x": {
+      "spearman_r": 0.191,
+      "n": 8708
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.329,
+      "spearman_ci": [
+       0.305,
+       0.352
+      ],
+      "pairwise_acc": 0.707,
+      "n": 8708
+     },
+     "en_to_x": {
+      "spearman_r": 0.329,
+      "n": 8708
+     }
+    }
+   },
+   "language_pairs": [
+    "en-es"
+   ],
+   "directions": [
+    "en_to_x"
+   ],
+   "evidence": "direct_en_to_x"
+  },
+  "cs": {
+   "label_type": "human_da",
+   "human_labels": true,
+   "domain": "news",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.275,
+      "spearman_ci": [
+       0.266,
+       0.282
+      ],
+      "pairwise_acc": 0.595,
+      "n": 135844
+     },
+     "en_to_x": {
+      "spearman_r": 0.366,
+      "n": 70943
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.304,
+      "spearman_ci": [
+       0.296,
+       0.312
+      ],
+      "pairwise_acc": 0.605,
+      "n": 135844
+     },
+     "en_to_x": {
+      "spearman_r": 0.401,
+      "n": 70943
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.573,
+      "spearman_ci": [
+       0.567,
+       0.58
+      ],
+      "pairwise_acc": 0.702,
+      "n": 135844
+     },
+     "en_to_x": {
+      "spearman_r": 0.699,
+      "n": 70943
+     }
+    }
+   },
+   "language_pairs": [
+    "cs-en",
+    "de-cs",
+    "en-cs"
+   ],
+   "directions": [
+    "en_to_x",
+    "x_to_en",
+    "x_to_y"
+   ],
+   "evidence": "direct_en_to_x"
+  },
+  "tr": {
+   "label_type": "human_da",
+   "human_labels": true,
+   "domain": "news",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.333,
+      "spearman_ci": [
+       0.322,
+       0.344
+      ],
+      "pairwise_acc": 0.613,
+      "n": 35357
+     },
+     "en_to_x": {
+      "spearman_r": 0.397,
+      "n": 5171
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.388,
+      "spearman_ci": [
+       0.377,
+       0.399
+      ],
+      "pairwise_acc": 0.635,
+      "n": 35357
+     },
+     "en_to_x": {
+      "spearman_r": 0.48,
+      "n": 5171
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.56,
+      "spearman_ci": [
+       0.552,
+       0.571
+      ],
+      "pairwise_acc": 0.697,
+      "n": 35357
+     },
+     "en_to_x": {
+      "spearman_r": 0.724,
+      "n": 5171
+     }
+    }
+   },
+   "language_pairs": [
+    "en-tr",
+    "tr-en"
+   ],
+   "directions": [
+    "en_to_x",
+    "x_to_en"
+   ],
+   "evidence": "direct_en_to_x"
+  },
+  "uk": {
+   "label_type": "human_da",
+   "human_labels": true,
+   "domain": "other",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.01,
+      "spearman_ci": [
+       -0.009,
+       0.031
+      ],
+      "pairwise_acc": 0.5,
+      "n": 16470
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.009,
+      "spearman_ci": [
+       -0.011,
+       0.029
+      ],
+      "pairwise_acc": 0.499,
+      "n": 16470
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.001,
+      "spearman_ci": [
+       -0.02,
+       0.021
+      ],
+      "pairwise_acc": 0.499,
+      "n": 16470
+     }
+    }
+   },
+   "language_pairs": [
+    "uk-en"
+   ],
+   "directions": [
+    "x_to_en"
+   ],
+   "evidence": "none",
+   "note": "WMT22 uk-en crowd reference-based DA; near-zero correlation for every metric, attributed in v2 to the label (into-English crowd reference-based DA), not to the language. Treat as no evidence."
+  },
+  "ha": {
+   "label_type": "human_da",
+   "human_labels": true,
+   "domain": "news",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.109,
+      "spearman_ci": [
+       0.093,
+       0.126
+      ],
+      "pairwise_acc": 0.532,
+      "n": 23983
+     },
+     "en_to_x": {
+      "spearman_r": 0.184,
+      "n": 10812
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.136,
+      "spearman_ci": [
+       0.118,
+       0.153
+      ],
+      "pairwise_acc": 0.542,
+      "n": 23983
+     },
+     "en_to_x": {
+      "spearman_r": 0.242,
+      "n": 10812
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.183,
+      "spearman_ci": [
+       0.165,
+       0.2
+      ],
+      "pairwise_acc": 0.558,
+      "n": 23983
+     },
+     "en_to_x": {
+      "spearman_r": 0.341,
+      "n": 10812
+     }
+    }
+   },
+   "language_pairs": [
+    "en-ha",
+    "ha-en"
+   ],
+   "directions": [
+    "en_to_x",
+    "x_to_en"
+   ],
+   "evidence": "direct_en_to_x",
+   "note": "en->X DA available; the X->en DA (ha-en) is weak for every metric."
+  },
+  "km": {
+   "label_type": "human_da",
+   "human_labels": true,
+   "domain": "wiki",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.342,
+      "spearman_ci": [
+       0.315,
+       0.37
+      ],
+      "pairwise_acc": 0.616,
+      "n": 4722
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.387,
+      "spearman_ci": [
+       0.359,
+       0.415
+      ],
+      "pairwise_acc": 0.633,
+      "n": 4722
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.476,
+      "spearman_ci": [
+       0.452,
+       0.502
+      ],
+      "pairwise_acc": 0.666,
+      "n": 4722
+     }
+    }
+   },
+   "language_pairs": [
+    "km-en"
+   ],
+   "directions": [
+    "x_to_en"
+   ],
+   "evidence": "indirect",
+   "note": "Human labels are X->en DA only (km-en); no en->X evidence."
+  },
+  "ps": {
+   "label_type": "human_da",
+   "human_labels": true,
+   "domain": "wiki",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.238,
+      "spearman_ci": [
+       0.209,
+       0.265
+      ],
+      "pairwise_acc": 0.581,
+      "n": 4611
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.28,
+      "spearman_ci": [
+       0.25,
+       0.307
+      ],
+      "pairwise_acc": 0.595,
+      "n": 4611
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.333,
+      "spearman_ci": [
+       0.305,
+       0.36
+      ],
+      "pairwise_acc": 0.614,
+      "n": 4611
+     }
+    }
+   },
+   "language_pairs": [
+    "ps-en"
+   ],
+   "directions": [
+    "x_to_en"
+   ],
+   "evidence": "indirect",
+   "note": "Human labels are X->en DA only (ps-en); no en->X evidence."
+  },
+  "sw": {
+   "label_type": "synthetic_mqm",
+   "human_labels": false,
+   "domain": "unknown",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.017,
+      "spearman_ci": [
+       -0.046,
+       0.079
+      ],
+      "pairwise_acc": 0.506,
+      "n": 1012
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.077,
+      "spearman_ci": [
+       0.016,
+       0.137
+      ],
+      "pairwise_acc": 0.529,
+      "n": 1012
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.095,
+      "spearman_ci": [
+       0.033,
+       0.159
+      ],
+      "pairwise_acc": 0.535,
+      "n": 1012
+     }
+    }
+   },
+   "language_pairs": [
+    "flores"
+   ],
+   "directions": [
+    "en_to_x"
+   ],
+   "evidence": "none",
+   "note": "Synthetic MQM labels from an LLM judge (v2 Tier 2), not validated against human annotation."
+  },
+  "ht": {
+   "label_type": "synthetic_mqm",
+   "human_labels": false,
+   "domain": "unknown",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": 0.139,
+      "spearman_ci": [
+       0.077,
+       0.193
+      ],
+      "pairwise_acc": 0.561,
+      "n": 1012
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": 0.138,
+      "spearman_ci": [
+       0.075,
+       0.196
+      ],
+      "pairwise_acc": 0.56,
+      "n": 1012
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": 0.126,
+      "spearman_ci": [
+       0.066,
+       0.183
+      ],
+      "pairwise_acc": 0.555,
+      "n": 1012
+     }
+    }
+   },
+   "language_pairs": [
+    "flores"
+   ],
+   "directions": [
+    "en_to_x"
+   ],
+   "evidence": "none",
+   "note": "Synthetic MQM labels from an LLM judge (v2 Tier 2), not validated against human annotation."
+  },
+  "lo": {
+   "label_type": "synthetic_mqm",
+   "human_labels": false,
+   "domain": "unknown",
+   "metrics": {
+    "bleu": {
+     "pooled": {
+      "spearman_r": -0.073,
+      "spearman_ci": [
+       -0.142,
+       -0.01
+      ],
+      "pairwise_acc": 0.465,
+      "n": 1012
+     }
+    },
+    "chrf": {
+     "pooled": {
+      "spearman_r": -0.04,
+      "spearman_ci": [
+       -0.099,
+       0.02
+      ],
+      "pairwise_acc": 0.481,
+      "n": 1012
+     }
+    },
+    "comet": {
+     "pooled": {
+      "spearman_r": -0.065,
+      "spearman_ci": [
+       -0.128,
+       0.003
+      ],
+      "pairwise_acc": 0.468,
+      "n": 1012
+     }
+    }
+   },
+   "language_pairs": [
+    "flores"
+   ],
+   "directions": [
+    "en_to_x"
+   ],
+   "evidence": "none",
+   "note": "Synthetic MQM labels from an LLM judge (v2 Tier 2), not validated against human annotation."
+  }
+ }
+}

@@ -61,7 +61,7 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-"mirroreval" = ["slurm_templates/*.j2", "benchmarks/creativity/creativity_metrics.py"]
+"mirroreval" = ["slurm_templates/*.j2", "benchmarks/creativity/creativity_metrics.py", "benchmarks/mqm/amanamt_v2_reliability.json"]
 
 [tool.black]
 line-length = 88

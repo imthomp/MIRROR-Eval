@@ -4,8 +4,8 @@ MQM Metrics
 Implements MT metric scoring for the MQM benchmark.
 
 Three metric classes are registered:
-  - "bleu"       : BLEU (sacrebleu corpus-level)
-  - "chrf"       : ChrF (sacrebleu corpus-level)
+  - "bleu"       : BLEU (sacrebleu, sentence-level; spBLEU for unsegmented scripts)
+  - "chrf"       : ChrF (sacrebleu, sentence-level)
   - "comet"      : COMET-DA (Unbabel/wmt22-comet-da, reference-based)
 
 Each class implements MetricInterface. When called with a list of segment dicts
@@ -29,12 +29,25 @@ from mirroreval.logger import logger
 # ---------------------------------------------------------------------------
 # BLEU
 # ---------------------------------------------------------------------------
+# Target languages written without spaces between words. sacrebleu's default
+# 13a tokenizer treats a whole sentence in these scripts as one or two tokens,
+# so BLEU collapses to ~0. Use the FLORES-200 SentencePiece tokenizer (spBLEU)
+# for them, as AmanaMT v2 does.
+UNSEGMENTED_LANGS = {"zh", "ja", "th", "lo", "my", "km"}
+
+
+def bleu_tokenizer(lang: str | None) -> str:
+    """sacrebleu tokenizer name for a target language."""
+    return "flores200" if lang in UNSEGMENTED_LANGS else "13a"
+
+
 @register_metric("bleu")
 class BLEUMetric(MetricInterface):
     """
     Sentence-level BLEU via sacrebleu.
 
-    Adds "bleu_score" (float, 0–100) to each segment dict.
+    Adds "bleu_score" (float, 0–100) to each segment dict. Uses the flores200
+    tokenizer (spBLEU) for unsegmented scripts; see UNSEGMENTED_LANGS.
     """
 
     def __call__(self, segments: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -48,7 +61,9 @@ class BLEUMetric(MetricInterface):
             hyp = seg.get("hypothesis", "")
             ref = seg.get("reference", "")
             try:
-                score = sacrebleu.sentence_bleu(hyp, [ref]).score
+                score = sacrebleu.sentence_bleu(
+                    hyp, [ref], tokenize=bleu_tokenizer(seg.get("lang"))
+                ).score
             except Exception as exc:
                 logger.warning(f"BLEU scoring failed for segment (hyp={hyp!r:.40}): {exc}")
                 score = 0.0
